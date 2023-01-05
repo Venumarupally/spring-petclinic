@@ -1,0 +1,21 @@
+pipeline {
+    agent { label 'OPENJDK-11-MVN' }
+    stages {
+        stage('vcs') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Venumarupally/spring-petclinic.git'
+            }
+
+        }
+        stage('buid') {
+            steps {
+                sh 'opt/apache-maven-3.6.3/bin/mvn package'
+            }
+        }
+        stage('archive results') {
+            steps {
+                junit '**/surefire-reports/*.xml'
+            }
+        }
+    }
+}
